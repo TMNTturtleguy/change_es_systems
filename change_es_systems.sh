@@ -3,7 +3,7 @@
 #############
 # This script lets you change the es_systems.cfg file used to display systems using your controllers.
 #
-#
+# v1
 # TMNTturtlguy - June 2017
 
 # dialog functions ##########################################################
