@@ -32,8 +32,7 @@ dialog --backtitle "W A R N I N G !" --title " WARNING! " \
 
 
 function restart_es() {
-    touch /tmp/es-restart \
-    && pkill -f "/opt/retropie/supplementary/.*/emulationstation([^.]|$)"
+    touch /tmp/es-restart && pkill -f "/opt/retropie/supplementary/.*/emulationstation([^.]|$)"
 }
 
 function main_menu() {
