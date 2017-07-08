@@ -28,33 +28,10 @@
     15 75 2>&1 > /dev/tty \
     || exit
 
-# dialog functions ##########################################################
-
-function dialogMenu() {
-    local text="$1"
-    shift
-    dialog --no-mouse \
-        --backtitle "$BACKTITLE" \
-        --cancel-label "Back" \
-        --ok-label "OK" \
-        --menu "$text\n\nChoose an option." 17 75 10 "$@" \
-        2>&1 > /dev/tty
+function restart_es() {
+    touch /tmp/es-restart && pkill -f "/opt/retropie/supplementary/.*/emulationstation([^.]|$)"
+    exit
 }
-
-function dialogYesNo() {
-    dialog --no-mouse --backtitle "$BACKTITLE" --yesno "$@" 15 75 2>&1 > /dev/tty
-}
-
-function dialogMsg() {
-    dialog --no-mouse --ok-label "OK" --backtitle "$BACKTITLE" --msgbox "$@" 20 70 2>&1 > /dev/tty
-}
-
-function dialogInfo {
-    dialog --infobox "$@" 8 50 2>&1 >/dev/tty
-}
-
-# end of dialog functions ###################################################
-
 
 function main_menu() {
     local choice
@@ -63,11 +40,11 @@ function main_menu() {
         choice=$(dialog --backtitle "$BACKTITLE" --title " MAIN MENU " \
             --ok-label OK --cancel-label Exit \
             --menu "What do you want to do?" 17 75 10 \
-            B "Change to es_systems ALL" \
-            E "change to es_systems Consoles" \
-            C "Change to es_systems Customs" \
-            R "Change to es_systems Favorites" \
-			U "Change to es_systems Hacks" \
+            B "Change to es_systems ALL and restart ES" \
+            E "change to es_systems Consoles and restart ES" \
+            C "Change to es_systems Customs and restart ES" \
+            R "Change to es_systems Favorites and restart ES" \
+	    U "Change to es_systems Hacks" \
             2>&1 > /dev/tty)
 
         case "$choice" in
@@ -75,45 +52,41 @@ function main_menu() {
             E)  change_to_consoles ;;
             C)  change_to_customs ;;
             R)  change_to_favorites ;;
-			U)  change_to_hacks ;;
+	    U) change_to_hacks ;;
             *)  break ;;
         esac
     done
 }
 
+
 function change_to_all() {
-    sudo rm /opt/retropie/configs/all/emulationstation/es_systems.cfg
-	
-    sudo cp /opt/retropie/configs/all/emulationstation/es_systems/All/es_systems.cfg /opt/retropie/configs/all/emulationstation/
-	
+    rm /opt/retropie/configs/all/emulationstation/es_systems.cfg
+    cp /opt/retropie/configs/all/emulationstation/es_systems/all/es_systems.cfg /opt/retropie/configs/all/emulationstation/
+    restart_es
 }
 
 function change_to_consoles() {
-    sudo rm /opt/retropie/configs/all/emulationstation/es_systems.cfg
-	
-    sudo cp /opt/retropie/configs/all/emulationstation/es_systems/Consoles/es_systems.cfg /opt/retropie/configs/all/emulationstation/
-
+    rm /opt/retropie/configs/all/emulationstation/es_systems.cfg
+    cp /opt/retropie/configs/all/emulationstation/es_systems/consoles/es_systems.cfg /opt/retropie/configs/all/emulationstation/
+    restart_es
 }
 
 function change_to_customs() {
-    sudo rm /opt/retropie/configs/all/emulationstation/es_systems.cfg
-	
-    sudo cp /opt/retropie/configs/all/emulationstation/es_systems/Customs/es_systems.cfg /opt/retropie/configs/all/emulationstation/
-
+    rm /opt/retropie/configs/all/emulationstation/es_systems.cfg
+    cp /opt/retropie/configs/all/emulationstation/es_systems/customs/es_systems.cfg /opt/retropie/configs/all/emulationstation/
+    restart_es
 }
 
 function change_to_favorites() {
-    sudo rm /opt/retropie/configs/all/emulationstation/es_systems.cfg
-	
-    sudo cp /opt/retropie/configs/all/emulationstation/es_systems/Favorites/es_systems.cfg /opt/retropie/configs/all/emulationstation/
-
+    rm /opt/retropie/configs/all/emulationstation/es_systems.cfg
+    cp /opt/retropie/configs/all/emulationstation/es_systems/favorites/es_systems.cfg /opt/retropie/configs/all/emulationstation/
+    restart_es
 }
 
 function change_to_hacks() {
-    sudo rm /opt/retropie/configs/all/emulationstation/es_systems.cfg
-	
-    sudo cp /opt/retropie/configs/all/emulationstation/es_systems/Hacks/es_systems.cfg /opt/retropie/configs/all/emulationstation/
-
+    rm /opt/retropie/configs/all/emulationstation/es_systems.cfg
+    cp /opt/retropie/configs/all/emulationstation/es_systems/Hacks/es_systems.cfg /opt/retropie/configs/all/emulationstation/
+    restart_es
 }
 
 # START HERE #################################################################
